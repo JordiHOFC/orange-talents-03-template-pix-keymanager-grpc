@@ -8,13 +8,30 @@ option objc_class_prefix = "HLW";
 package br.com.zup.edu;
 
 service PixKeyManagerGRpcService {
-  rpc send (PixKeyManagerGRpcRequest) returns (PixKeyManagerGRpcReply) {}
+  rpc cadastrarChave (PixKeyRequest) returns (PixKeyResponse) {}
 }
 
-message PixKeyManagerGRpcRequest {
-  string name = 1;
+enum TipoChave{
+  CPF = 0;
+  TELEFONECELULAR = 1;
+  EMAIL=2;
+  CHAVEALEATORIA=3;
+
 }
 
-message PixKeyManagerGRpcReply {
-  string message = 1;
+enum TipoConta{
+  CONTA_CORRENTE=0;
+  CONTA_POUNPA=1;
+}
+
+
+message PixKeyRequest {
+  string chave = 1;
+  string idPortador = 2;
+  TipoChave tipo = 3;
+  TipoConta conta = 4;
+}
+
+message PixKeyResponse {
+  string idPix = 1;
 }
