@@ -21,7 +21,7 @@ enum TipoChave{
 
 enum TipoConta{
   CONTA_CORRENTE=0;
-  CONTA_POUNPA=1;
+  CONTA_POUPANCA=1;
 }
 
 

@@ -8,6 +8,7 @@ import java.util.*
 import javax.inject.Singleton
 
 @Singleton
+//5
 class CadastrarChavePixServer(
     //1
     val repository: ChaveRepository
@@ -21,15 +22,17 @@ class CadastrarChavePixServer(
             //1
             if (request.chave.isBlank() || request.chave.isEmpty()) {
                 val e = Status.INVALID_ARGUMENT
+                var asRuntimeException = e.withDescription(
+                    "Deve conter um valor para chave, caso o tipo seja diferente de Aleatoria."
+                ).asRuntimeException()
                 responseObserver!!.onError(
-                    e.withDescription(
-                        "Deve conter um valor para chave, caso o tipo seja diferente de Aleatoria."
-                    ).asRuntimeException()
+                    asRuntimeException
 
                 )
                 return
             }
             val valida = validaValorParachave(request.chave)
+            //1
             if (valida) {
                 val existsByChave = repository.existsByChave(request.chave)
                 //1
