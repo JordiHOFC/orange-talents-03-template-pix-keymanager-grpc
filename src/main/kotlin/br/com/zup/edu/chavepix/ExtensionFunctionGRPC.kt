@@ -14,7 +14,7 @@ public fun PixKeyRequest.toChave(): Chave {
             TipoDaChave.valueOf(this.tipo.name)
         )
     }
-    val funcao= fun (@Valid request:ChavePixRequest): Chave= toChave()
+    val funcao= fun (@Valid request:ChavePixRequest): Chave= request.paraChave()
     var chavePixRequest = ChavePixRequest(
         this.chave,
         this.idPortador,

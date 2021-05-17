@@ -15,6 +15,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.runners.Parameterized
 import java.util.*
 import javax.inject.Singleton
+import javax.validation.ConstraintViolationException
 
 @MicronautTest(transactional = false)
 internal class CadastrarChavePixServerTest(
@@ -77,6 +78,18 @@ internal class CadastrarChavePixServerTest(
         assertEquals(Status.INVALID_ARGUMENT, e.status.code.toStatus())
         assertEquals("O valor informado não corresponde ao ${request.tipo.name}.", e.status.description)
 
+    }
+
+    @Test
+    internal fun aaa(){
+        val request= PixKeyRequest.newBuilder()
+                .setChave("jor.silva")
+                .setConta(TipoConta.CONTA_POUPANCA)
+                .setTipo(TipoChave.EMAIL)
+                .setIdPortador(UUID.randomUUID().toString())
+                .build()
+        var assertThrows = assertThrows<ConstraintViolationException> { request.toChave() }
+        assertNotNull(assertThrows.message)
     }
 
     @Test

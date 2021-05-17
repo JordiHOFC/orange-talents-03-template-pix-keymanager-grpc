@@ -43,7 +43,6 @@ dependencies {
     testImplementation("io.micronaut:micronaut-http-client")
 }
 
-
 application {
     mainClass.set("br.com.zup.edu.ApplicationKt")
 }
