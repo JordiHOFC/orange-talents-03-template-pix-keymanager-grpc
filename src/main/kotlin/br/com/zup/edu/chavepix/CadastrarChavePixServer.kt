@@ -1,6 +1,7 @@
 package br.com.zup.edu.chavepix
 
 import br.com.zup.edu.*
+import br.com.zup.edu.chavepix.validator.ValidUUID
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import org.slf4j.LoggerFactory
@@ -31,7 +32,6 @@ class CadastrarChavePixServer(
                 )
                 return
             }
-            val valida = validaValorParachave(request.chave)
             //1
             if (valida) {
                 val existsByChave = repository.existsByChave(request.chave)
@@ -73,8 +73,8 @@ class CadastrarChavePixServer(
 
 private fun PixKeyRequest.toChave():Chave {
     return Chave(
-        this.chave,
-        this.idPortador,
+        @ChaveValida this.chave,
+        @ValidUUID this.idPortador,
         TipoDaConta.valueOf(this.conta.name),
         TipoDaChave.valueOf(this.tipo.name)
     )
@@ -82,8 +82,8 @@ private fun PixKeyRequest.toChave():Chave {
 
 private fun PixKeyRequest.toChaveAleatoria(): Chave{
     return Chave(
-        UUID.randomUUID().toString(),
-        this.idPortador,
+        @ValidUUID UUID.randomUUID().toString(),
+        @ValidUUID this.idPortador,
         TipoDaConta.valueOf(this.conta.name),
         TipoDaChave.valueOf(this.tipo.name)
     )
