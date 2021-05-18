@@ -10,18 +10,20 @@ package br.com.zup.edu;
 service PixKeyManagerGRpcService {
   rpc cadastrarChave (PixKeyRequest) returns (PixKeyResponse) {}
 }
-
+service RemoveKeyManagerGrpcService{
+  rpc removerChave (RemoveKeyRequest) returns (RemoveKeyResponse){}
+}
 enum TipoChave{
   CPF = 0;
   TELEFONECELULAR = 1;
-  EMAIL=2;
-  CHAVEALEATORIA=3;
+  EMAIL = 2;
+  CHAVEALEATORIA = 3;
 
 }
 
 enum TipoConta{
-  CONTA_CORRENTE=0;
-  CONTA_POUPANCA=1;
+  CONTA_CORRENTE = 0;
+  CONTA_POUPANCA = 1;
 }
 
 
@@ -34,4 +36,12 @@ message PixKeyRequest {
 
 message PixKeyResponse {
   string idPix = 1;
+}
+
+message RemoveKeyRequest{
+  string pixId = 1;
+  string idPortador = 2;
+}
+message RemoveKeyResponse{
+  string pixId=1;
 }
