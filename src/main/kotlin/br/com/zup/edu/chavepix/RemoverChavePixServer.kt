@@ -3,12 +3,14 @@ package br.com.zup.edu.chavepix
 import br.com.zup.edu.RemoveKeyManagerGrpcServiceGrpc
 import br.com.zup.edu.RemoveKeyRequest
 import br.com.zup.edu.RemoveKeyResponse
+import br.com.zup.edu.handler.ErrorHandler
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 
 @Singleton
+@ErrorHandler
 class RemoverChavePixServer(
         val repository: ChaveRepository
 ):RemoveKeyManagerGrpcServiceGrpc.RemoveKeyManagerGrpcServiceImplBase() {

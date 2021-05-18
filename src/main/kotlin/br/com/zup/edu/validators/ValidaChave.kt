@@ -6,10 +6,7 @@ public fun validaValorParachave(chave: String): Boolean {
             return true
         }
         chave.matches("[0-9]{11}".toRegex()) -> {
-            if (validaCpf(chave)){
-                return true
-            }
-            return false
+            return true
         }
         chave.matches("^[A-Za-z0-9+_.-]+@(.+)\$".toRegex()) -> {
             return true

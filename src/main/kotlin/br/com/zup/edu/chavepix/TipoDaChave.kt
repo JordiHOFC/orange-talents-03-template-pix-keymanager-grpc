@@ -1,5 +1,5 @@
 package br.com.zup.edu.chavepix
 
 enum class TipoDaChave {
-    CPF,TELEFONECELULAR,EMAIL,CHAVEALEATORIA
+    SEM_TIPOCHAVE,CPF,TELEFONECELULAR,EMAIL,CHAVEALEATORIA
 }

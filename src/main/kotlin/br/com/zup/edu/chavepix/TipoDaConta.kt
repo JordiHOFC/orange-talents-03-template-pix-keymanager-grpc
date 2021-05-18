@@ -1,5 +1,5 @@
 package br.com.zup.edu.chavepix
 
 enum class TipoDaConta {
-    CONTA_CORRENTE,CONTA_POUPANCA
+    SEM_TIPOCONTA,CONTA_CORRENTE,CONTA_POUPANCA
 }

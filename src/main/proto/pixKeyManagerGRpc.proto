@@ -14,16 +14,18 @@ service RemoveKeyManagerGrpcService{
   rpc removerChave (RemoveKeyRequest) returns (RemoveKeyResponse){}
 }
 enum TipoChave{
-  CPF = 0;
-  TELEFONECELULAR = 1;
-  EMAIL = 2;
-  CHAVEALEATORIA = 3;
+  SEM_TIPOCHAVE=0;
+  CPF = 1;
+  TELEFONECELULAR = 2;
+  EMAIL = 3;
+  CHAVEALEATORIA = 4;
 
 }
 
 enum TipoConta{
-  CONTA_CORRENTE = 0;
-  CONTA_POUPANCA = 1;
+  SEM_TIPOCONTA=0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
 }
 
 
