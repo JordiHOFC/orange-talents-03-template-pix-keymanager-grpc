@@ -15,3 +15,7 @@ jpa.default.properties.hibernate.format_sql: true
 itau:
   accounts:
     url: 'http://localhost:9091/'
+
+bcb:
+  accounts:
+    url: 'http://localhost:8082/'
