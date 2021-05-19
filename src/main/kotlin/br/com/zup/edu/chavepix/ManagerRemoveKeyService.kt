@@ -1,10 +1,7 @@
 package br.com.zup.edu.chavepix
 
 import br.com.zup.edu.clients.BancoCentralBrasilClient
-import br.com.zup.edu.exceptions.ChavePixNotFoundException
-import br.com.zup.edu.exceptions.ClientNotFoundException
-import br.com.zup.edu.exceptions.ConstraintValidationsViolityException
-import br.com.zup.edu.exceptions.NaoPortadorDaChaveException
+import br.com.zup.edu.exceptions.*
 import br.com.zup.edu.paraRemovePixKeyRequest
 import org.slf4j.LoggerFactory
 import javax.inject.Inject
@@ -31,7 +28,7 @@ class ManagerRemoveKeyService(
         }
         val responseBcb = clientBcb.deletarChave(chave.chave, chave.paraRemovePixKeyRequest())
         if (responseBcb.status().code!=200){
-            throw ClientNotFoundException("Falha ao remover chave pix ao banco central.")
+            throw ConectionBancoCentralNotFoundException("Falha ao remover chave pix ao banco central.")
         }
         repository.delete(chave)
         return true
