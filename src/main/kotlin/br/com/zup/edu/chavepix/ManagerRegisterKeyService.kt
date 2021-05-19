@@ -4,13 +4,13 @@ import br.com.zup.edu.clients.BancoCentralBrasilClient
 import br.com.zup.edu.clients.ItauLegacyClient
 import br.com.zup.edu.exceptions.ChavePixExistenteException
 import br.com.zup.edu.exceptions.ClientNotFoundException
+import br.com.zup.edu.exceptions.ConectionBancoCentralNotFoundException
 import br.com.zup.edu.paraCreatePixRequest
 import br.com.zup.edu.validators.ChaveValidaValidator
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-
 class ManagerRegisterKeyService(
         @Inject val chaveRepository: ChaveRepository,
         @Inject val clientItau: ItauLegacyClient,
@@ -33,7 +33,7 @@ class ManagerRegisterKeyService(
         val chave = chavePixRequest.paraChave(responseItau.body()!!.paraContaAssociada())
         val responseBcb = clientBcb.cadastrarChave(chave.paraCreatePixRequest())
         if (responseBcb.status.code!=201){
-            throw ClientNotFoundException("Falha ao sincronizar ao Banco Central do Brasil.")
+            throw ConectionBancoCentralNotFoundException("Falha ao sincronizar ao Banco Central do Brasil.")
         }
         chave.atualizaChave(responseBcb.body()!!.key)
         chave.atualizaDataCriacao(responseBcb.body()!!.createdAt)

@@ -1,9 +1,7 @@
 package br.com.zup.edu.chavepix
 
-import br.com.zup.edu.PixKeyManagerGRpcServiceGrpc
-import br.com.zup.edu.PixKeyRequest
-import br.com.zup.edu.TipoChave
-import br.com.zup.edu.TipoConta
+import br.com.zup.edu.*
+import br.com.zup.edu.clients.BancoCentralBrasilClient
 import br.com.zup.edu.clients.ItauLegacyClient
 import io.grpc.ManagedChannel
 import io.grpc.Status
@@ -20,6 +18,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,20 +31,22 @@ internal class CadastrarNovaChavePixServerTest(
     val IDCLIENT = UUID.randomUUID().toString()
 
     @Inject
-    lateinit var client: ItauLegacyClient
+    lateinit var clientItau: ItauLegacyClient
 
+    @Inject
+    lateinit var clientBcb: BancoCentralBrasilClient
 
     @Test
     internal fun `deve cadastrar uma chave valida`() {
-
-        `when`(client.findClient(IDCLIENT, TipoConta.CONTA_POUPANCA.name)).thenReturn(HttpResponse.ok(dadosResponse()))
-
         val request = PixKeyRequest.newBuilder()
                 .setIdPortador(IDCLIENT)
                 .setTipo(TipoChave.CPF)
                 .setConta(TipoConta.CONTA_POUPANCA)
                 .setChave("32759160092")
                 .build()
+        val chave = request.paraChavePixRequest().paraChave(dadosResponse().paraContaAssociada())
+        `when`(clientItau.findClient(IDCLIENT, TipoConta.CONTA_POUPANCA.name)).thenReturn(HttpResponse.ok(dadosResponse()))
+        `when`(clientBcb.cadastrarChave(chave.paraCreatePixRequest())).thenReturn(HttpResponse.created(dadosBancoCentralResponse(chave.paraCreatePixRequest())))
 
         val reponse = grpcClient.cadastrarChave(request)
         with(reponse) {
@@ -55,7 +56,7 @@ internal class CadastrarNovaChavePixServerTest(
 
     @Test
     internal fun `nao deve cadastrar uma chave quando o cliente nao existe no itau`() {
-        `when`(client.findClient(IDCLIENT, TipoConta.CONTA_POUPANCA.name)).thenReturn(HttpResponse.notFound())
+        `when`(clientItau.findClient(IDCLIENT, TipoConta.CONTA_POUPANCA.name)).thenReturn(HttpResponse.notFound())
 
         val request = PixKeyRequest.newBuilder()
                 .setIdPortador(IDCLIENT)
@@ -70,6 +71,28 @@ internal class CadastrarNovaChavePixServerTest(
         with(e) {
             assertEquals(Status.FAILED_PRECONDITION, e.status.code.toStatus())
             assertEquals("Nao exite cadastro para este cliente.", e.status.description)
+        }
+    }
+
+    @Test
+    internal fun `nao deve cadastrar uma chave quando o servidor do Banco central esta fora`() {
+        val request = PixKeyRequest.newBuilder()
+                .setIdPortador(IDCLIENT)
+                .setTipo(TipoChave.CPF)
+                .setConta(TipoConta.CONTA_POUPANCA)
+                .setChave("32759160092")
+                .build()
+        val chave = request.paraChavePixRequest().paraChave(dadosResponse().paraContaAssociada())
+        `when`(clientItau.findClient(IDCLIENT, TipoConta.CONTA_POUPANCA.name)).thenReturn(HttpResponse.ok(dadosResponse()))
+        `when`(clientBcb.cadastrarChave(chave.paraCreatePixRequest())).thenReturn(HttpResponse.notFound())
+
+        val e = assertThrows<StatusRuntimeException> {
+            grpcClient.cadastrarChave(request)
+        }
+
+        with(e) {
+            assertEquals(Status.FAILED_PRECONDITION, e.status.code.toStatus())
+            assertEquals("Falha ao sincronizar ao Banco Central do Brasil.", e.status.description)
         }
     }
 
@@ -125,10 +148,14 @@ internal class CadastrarNovaChavePixServerTest(
     }
 
 
-
     @MockBean(ItauLegacyClient::class)
     fun contasItau(): ItauLegacyClient? {
         return Mockito.mock(ItauLegacyClient::class.java)
+    }
+
+    @MockBean(BancoCentralBrasilClient::class)
+    fun bancoCentral(): BancoCentralBrasilClient? {
+        return Mockito.mock(BancoCentralBrasilClient::class.java)
     }
 
     @Factory
@@ -144,5 +171,14 @@ internal class CadastrarNovaChavePixServerTest(
         val instuicao = ItauLegacyClient.Instituicao("Uni Banco Itau SA", "45612")
         return ItauLegacyClient.ResponseItau(TipoDaConta.CONTA_POUPANCA.name, "0001", "12356", titular, instuicao)
 
+    }
+    private fun dadosBancoCentralResponse(chave:BancoCentralBrasilClient.CriarChaveRequest):BancoCentralBrasilClient.CriarChaveResponse{
+        return BancoCentralBrasilClient.CriarChaveResponse(
+                key = chave.key,
+                keyType = chave.keyType,
+                bankAccount = chave.bankAccount,
+                owner = chave.owner,
+                createdAt = LocalDateTime.now()
+        )
     }
 }
