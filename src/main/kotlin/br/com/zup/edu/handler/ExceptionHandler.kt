@@ -1,6 +1,7 @@
 package br.com.zup.edu.handler
 
 import br.com.zup.edu.chavepix.CadastrarNovaChavePixServer
+import br.com.zup.edu.chavepix.ServerGRPC
 import br.com.zup.edu.exceptions.ExceptionGRPC
 import io.grpc.stub.StreamObserver
 import io.micronaut.aop.InterceptorBean
@@ -11,18 +12,32 @@ import javax.inject.Singleton
 
 @Singleton
 @InterceptorBean(ErrorHandler::class)
-class ExceptionHandler : MethodInterceptor<CadastrarNovaChavePixServer, Any?> {
+class ExceptionHandler : MethodInterceptor<ServerGRPC, Any?> {
     private val LOGGER = LoggerFactory.getLogger(this.javaClass)
+//
+//    override fun intercept(context: MethodInvocationContext<CadastrarNovaChavePixServer, Any?>?): Any? {
+//        //antes
+//        try {
+//            context!!.proceed()
+//        } catch (e: ExceptionGRPC) {
+//            LOGGER.info(e.message)
+//            val responseObserver = context!!.parameterValues[1] as StreamObserver<*>
+//            responseObserver.onError(e.getException().asRuntimeException())
+//        }
+//        return null
+//    }
 
-    override fun intercept(context: MethodInvocationContext<CadastrarNovaChavePixServer, Any?>?): Any? {
-        //antes
+    override fun intercept(context: MethodInvocationContext<ServerGRPC, Any?>): Any? {
+              //antes
         try {
-            context!!.proceed()
+            context.proceed()
+            println(context.executableMethod)
         } catch (e: ExceptionGRPC) {
             LOGGER.info(e.message)
-            val responseObserver = context!!.parameterValues[1] as StreamObserver<*>
+            val responseObserver = context.parameterValues[1] as StreamObserver<*>
             responseObserver.onError(e.getException().asRuntimeException())
         }
         return null
     }
+
 }
