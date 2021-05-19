@@ -19,20 +19,15 @@ class CadastrarNovaChavePixServer(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun cadastrarChave(request: PixKeyRequest?, responseObserver: StreamObserver<PixKeyResponse>?) {
-//        try {
-            val chave = service.registrarChave(request.paraChavePixRequest())
-            responseObserver!!.onNext(PixKeyResponse.newBuilder()
-                    .setIdPix(chave.id)
-                    .build()
-            )
-            responseObserver.onCompleted()
 
+        val chave = service.registrarChave(request.paraChavePixRequest())
+        responseObserver!!.onNext(PixKeyResponse
+                .newBuilder()
+                .setIdPix(chave.id)
+                .build()
+        )
+        responseObserver.onCompleted()
 
-//        }catch (e: ExceptionGRPC){
-//            e.printStackTrace()
-//            responseObserver!!.onError(e.getException().asRuntimeException())
-//
-//        }
     }
 }
 

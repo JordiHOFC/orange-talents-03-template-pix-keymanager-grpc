@@ -5,6 +5,6 @@ import io.grpc.Status
 class ClientNotFoundException(val s: String) : ExceptionGRPC() {
 
     override fun getException(): Status {
-        return Status.NOT_FOUND.withDescription(s)
+        return Status.FAILED_PRECONDITION.withDescription(s)
     }
 }

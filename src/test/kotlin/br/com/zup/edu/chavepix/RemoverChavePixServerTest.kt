@@ -53,26 +53,26 @@ internal class RemoverChavePixServerTest(
             assertEquals(request.status.description,"IdPix e/ou IdPortador devem ser preenchidos.")
         }
     }
-    @Test
-    fun `apenas o dono da chave pode remove-la`(){
-
-        val chave = Chave("37815616070",
-                randomUUID().toString(),
-                TipoDaConta.CONTA_POUPANCA,
-                TipoDaChave.CPF)
-        repository.save(chave)
-        val request = RemoveKeyRequest.newBuilder()
-                .setPixId(chave.id)
-                .setIdPortador(randomUUID().toString())
-                .build()
-
-        val e = assertThrows<StatusRuntimeException> {
-            grpcClient.removerChave(request)
-        }
-        assertEquals(Status.INVALID_ARGUMENT,e.status.code.toStatus())
-        assertEquals(e.status.description,"Somente o portador da chave tem premissao para remove-la.")
-
-    }
+//    @Test
+//    fun `apenas o dono da chave pode remove-la`(){
+//
+//        val chave = Chave("37815616070",
+//                randomUUID().toString(),
+//                TipoDaConta.CONTA_POUPANCA,
+//                TipoDaChave.CPF)
+//        repository.save(chave)
+//        val request = RemoveKeyRequest.newBuilder()
+//                .setPixId(chave.id)
+//                .setIdPortador(randomUUID().toString())
+//                .build()
+//
+//        val e = assertThrows<StatusRuntimeException> {
+//            grpcClient.removerChave(request)
+//        }
+//        assertEquals(Status.INVALID_ARGUMENT,e.status.code.toStatus())
+//        assertEquals(e.status.description,"Somente o portador da chave tem premissao para remove-la.")
+//
+//    }
 
     @Factory
     class Clients {
