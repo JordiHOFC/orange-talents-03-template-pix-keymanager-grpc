@@ -1,10 +1,9 @@
 package br.com.zup.edu.validators
 
-import br.com.zup.edu.chavepix.validaValorParachave
+
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import junit.framework.Assert.assertTrue
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 
 
