@@ -16,7 +16,7 @@ class ChaveValidaValidator(){
                 return true
             }
         }
-        throw ConstraintValidationsViolityException("Formato chave em formato Invalido")
+        throw ConstraintValidationsViolityException("Chave em formato Invalido.")
     }
 
 }

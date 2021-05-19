@@ -20,7 +20,7 @@ class ManagerKeyServer(
 
         if(!chavePixRequest.tipoChave.equals(TipoDaChave.CHAVEALEATORIA)){
             if (chaveRepository.existsByChave(chavePixRequest.chave)){
-                throw ChavePixExistenteException("Nao exite cadastro para este cliente.")
+                throw ChavePixExistenteException("Chave já cadastrada.")
             }
         }
         ChaveValidaValidator().isValid(chavePixRequest)

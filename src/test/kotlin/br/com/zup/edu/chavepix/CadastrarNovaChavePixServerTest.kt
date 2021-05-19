@@ -69,9 +69,62 @@ internal class CadastrarNovaChavePixServerTest(
 
         with(e) {
             assertEquals(Status.FAILED_PRECONDITION, e.status.code.toStatus())
-            assertEquals("Nao exite cadastro para este cliente.",e.status.description)
+            assertEquals("Nao exite cadastro para este cliente.", e.status.description)
         }
     }
+
+    @Test
+    internal fun `nao deve cadastrar uma chave em formato invalido`() {
+
+        val request = PixKeyRequest.newBuilder()
+                .setIdPortador(IDCLIENT)
+                .setTipo(TipoChave.CPF)
+                .setConta(TipoConta.CONTA_POUPANCA)
+                .setChave("32aasa160092")
+                .build()
+        val e = assertThrows<StatusRuntimeException> {
+            grpcClient.cadastrarChave(request)
+        }
+        with(e) {
+            assertEquals(Status.INVALID_ARGUMENT, e.status.code.toStatus())
+            assertEquals("Chave em formato Invalido.", e.status.description)
+        }
+    }
+
+    @Test
+    internal fun `nao deve cadastrar uma chave com todos dados em branco`() {
+
+        val request = PixKeyRequest.getDefaultInstance()
+        val e = assertThrows<StatusRuntimeException> {
+            grpcClient.cadastrarChave(request)
+        }
+        with(e) {
+            assertEquals(Status.INVALID_ARGUMENT, e.status.code.toStatus())
+            assertEquals("Chave em formato Invalido.", e.status.description)
+        }
+    }
+
+
+    @Test
+    internal fun `nao deve cadastrar uma chave ja existente`() {
+        val chave = Chave(chave = "16657363052", idPortador = IDCLIENT, tipoChave = TipoDaChave.CPF, conta = TipoDaConta.CONTA_POUPANCA, contaAssociada = dadosResponse().paraContaAssociada())
+        repository.save(chave)
+        val request = PixKeyRequest.newBuilder()
+                .setIdPortador(IDCLIENT)
+                .setTipo(TipoChave.CPF)
+                .setConta(TipoConta.CONTA_POUPANCA)
+                .setChave("16657363052")
+                .build()
+        val e = assertThrows<StatusRuntimeException> {
+            grpcClient.cadastrarChave(request)
+        }
+        with(e) {
+            assertEquals(Status.ALREADY_EXISTS, e.status.code.toStatus())
+            assertEquals("Chave já cadastrada.", e.status.description)
+        }
+    }
+
+
 
     @MockBean(ItauLegacyClient::class)
     fun contasItau(): ItauLegacyClient? {
