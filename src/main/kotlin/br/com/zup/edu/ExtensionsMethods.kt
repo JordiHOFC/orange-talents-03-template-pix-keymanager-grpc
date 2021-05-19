@@ -42,4 +42,8 @@ fun Chave.paraCreatePixRequest(): BancoCentralBrasilClient.CriarChaveRequest {
             bankAccount = bankAccount,
             owner = ownerRequest
     )
+
+}
+fun Chave.paraRemovePixKeyRequest(): BancoCentralBrasilClient.DeletePixKeyRequest{
+    return BancoCentralBrasilClient.DeletePixKeyRequest(this.chave,this.contaAssociada.ispbInstituicao)
 }
