@@ -26,9 +26,5 @@ class Chave(
         this.criadoEm = dateTime
     }
 
-    override fun toString(): String {
-        return "Chave(chave='$chave', idPortador='$idPortador', conta=$conta, tipoChave=$tipoChave, contaAssociada=$contaAssociada, criadoEm=$criadoEm, id='$id')"
-    }
-
 
 }
