@@ -7,5 +7,6 @@ import java.util.*
 @Repository
 interface ChaveRepository:JpaRepository<Chave,String> {
     fun existsByChave(chave: String): Boolean
+    fun findByChave(chave: String): Optional<Chave>
 
 }

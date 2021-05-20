@@ -3,7 +3,7 @@ micronaut:
     name: pixKeyManagerGRpc
 datasources:
   default:
-    url: ${DB_URL:`jdbc:postgresql://localhost:5432/keypix`}
+    url: ${DB_URL:`jdbc:postgresql://localhost:5433/keypix`}
     driverClassName: org.postgresql.Driver
     username: ${POSTGRES_USER:root}
     password: ${POSTGRES_PASSWORD:root}

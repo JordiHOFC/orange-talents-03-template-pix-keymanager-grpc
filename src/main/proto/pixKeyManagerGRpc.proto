@@ -4,6 +4,7 @@ option java_multiple_files = true;
 option java_package = "br.com.zup.edu";
 option java_outer_classname = "PixKeyManagerGRpc";
 option objc_class_prefix = "HLW";
+import "google/protobuf/timestamp.proto";
 
 package br.com.zup.edu;
 
@@ -12,6 +13,43 @@ service PixKeyManagerGRpcService {
 }
 service RemoveKeyManagerGrpcService{
   rpc removerChave (RemoveKeyRequest) returns (RemoveKeyResponse){}
+}
+service SearchPixKeyManagerGrpcService{
+  rpc consultarChaveKeyManager (SearchKeyRequest) returns (SearchKeyResponse){}
+  rpc consultaChaveExternal (SearchKeyExternalRequest) returns (SearchKeyExternalResponse){}
+}
+
+message SearchKeyRequest {
+  string pixId=1;
+  string idPortador=2;
+}
+message SearchKeyExternalRequest {
+  string chave=1;
+}
+
+message SearchKeyResponse{
+  TipoChave tipoChave=1;
+  string chave=2;
+  string nomePortador=3;
+  string cpfPortador=4;
+  ContaBancaria conta=5;
+  google.protobuf.Timestamp criadoEm=6;
+  string idPortador=7;
+  string idPix=8;
+}
+
+message SearchKeyExternalResponse{
+  TipoChave tipoChave=1;
+  string chave=2;
+  string nomePortador=3;
+  string cpfPortador=4;
+  ContaBancaria conta=5;
+  google.protobuf.Timestamp criadoEm=6;
+}
+message ContaBancaria{
+  string nomeInstituicao=1;
+  string numeroConta=2;
+  TipoConta tipoConta=3;
 }
 enum TipoChave{
   SEM_TIPOCHAVE=0;
