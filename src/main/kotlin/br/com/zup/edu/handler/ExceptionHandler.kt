@@ -15,10 +15,10 @@ class ExceptionHandler : MethodInterceptor<ServerGRPC, Any?> {
     private val LOGGER = LoggerFactory.getLogger(this.javaClass)
 
     override fun intercept(context: MethodInvocationContext<ServerGRPC, Any?>): Any? {
-              //antes
+
         try {
             context.proceed()
-            
+
         } catch (e: ExceptionGRPC) {
             LOGGER.info(e.message)
             val responseObserver = context.parameterValues[1] as StreamObserver<*>

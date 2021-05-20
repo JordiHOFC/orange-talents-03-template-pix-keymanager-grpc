@@ -31,7 +31,7 @@ class ManagerSearchKeyService(
             throw ConstraintValidationsViolityException("O campo chave deve ser preenchido.")
         }
         if (!validaValorParachave(request.chave)) {
-            throw ConstraintValidationsViolityException("Chave em formato invalido")
+            throw ConstraintValidationsViolityException("Chave em formato invalido.")
         }
         val possivelChave = repository.findByChave(request.chave)
         if (possivelChave.isEmpty) {
@@ -41,10 +41,10 @@ class ManagerSearchKeyService(
                 HttpStatus.OK -> return responseBcb.body()!!.paraSearchKeyExternalResponse()
             }
 
-        }else{
-            return possivelChave.get().paraSearchKeyExternalResponse()
         }
-        throw ConectionBancoCentralNotFoundException("Falha ao consultar ao banco central.")
+
+        return possivelChave.get().paraSearchKeyExternalResponse()
+
     }
 
 
