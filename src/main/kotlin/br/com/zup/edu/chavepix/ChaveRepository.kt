@@ -8,5 +8,6 @@ import java.util.*
 interface ChaveRepository:JpaRepository<Chave,String> {
     fun existsByChave(chave: String): Boolean
     fun findByChave(chave: String): Optional<Chave>
+    fun findByIdPortador(idPortador:String): List<Chave>
 
 }

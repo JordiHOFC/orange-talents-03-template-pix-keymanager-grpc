@@ -1,13 +1,10 @@
 package br.com.zup.edu.chavepix
 
-import br.com.zup.edu.SearchKeyExternalRequest
-import br.com.zup.edu.SearchKeyExternalResponse
-import br.com.zup.edu.SearchKeyRequest
+import br.com.zup.edu.*
 import br.com.zup.edu.clients.BancoCentralBrasilClient
 import br.com.zup.edu.exceptions.ChavePixNotFoundException
 import br.com.zup.edu.exceptions.ConectionBancoCentralNotFoundException
 import br.com.zup.edu.exceptions.ConstraintValidationsViolityException
-import br.com.zup.edu.paraSearchKeyExternalResponse
 import br.com.zup.edu.validators.validaValorParachave
 import io.micronaut.http.HttpStatus
 import javax.inject.Inject

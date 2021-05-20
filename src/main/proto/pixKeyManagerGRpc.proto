@@ -17,51 +17,67 @@ service RemoveKeyManagerGrpcService{
 service SearchPixKeyManagerGrpcService{
   rpc consultarChaveKeyManager (SearchKeyRequest) returns (SearchKeyResponse){}
   rpc consultaChaveExternal (SearchKeyExternalRequest) returns (SearchKeyExternalResponse){}
+  rpc listarTodasChavesDoPortador (SearchAllKeyBearerRequest) returns (SearchAllKeyBearerResponse){}
 }
 
 message SearchKeyRequest {
-  string pixId=1;
-  string idPortador=2;
+  string pixId = 1;
+  string idPortador = 2;
 }
 message SearchKeyExternalRequest {
-  string chave=1;
+  string chave = 1;
+}
+message SearchAllKeyBearerRequest{
+  string idPortador = 1;
+}
+message SearchAllKeyBearerResponse{
+
+  repeated Key keys = 1;
+}
+message Key {
+  string idPix = 1;
+  string chave = 2;
+  TipoChave tipoChave = 3;
+  string idPortador = 4;
+  TipoConta tipoConta = 5;
+  google.protobuf.Timestamp criadoEm = 6;
+}
+message SearchKeyResponse{
+  TipoChave tipoChave = 1;
+  string chave = 2;
+  string nomePortador = 3;
+  string cpfPortador = 4;
+  ContaBancaria conta = 5;
+  google.protobuf.Timestamp criadoEm = 6;
+  string idPortador = 7;
+  string idPix = 8;
 }
 
-message SearchKeyResponse{
-  TipoChave tipoChave=1;
-  string chave=2;
-  string nomePortador=3;
-  string cpfPortador=4;
-  ContaBancaria conta=5;
-  google.protobuf.Timestamp criadoEm=6;
-  string idPortador=7;
-  string idPix=8;
-}
+
 
 message SearchKeyExternalResponse{
-  TipoChave tipoChave=1;
-  string chave=2;
-  string nomePortador=3;
-  string cpfPortador=4;
-  ContaBancaria conta=5;
-  google.protobuf.Timestamp criadoEm=6;
+  TipoChave tipoChave = 1;
+  string chave = 2;
+  string nomePortador = 3;
+  string cpfPortador = 4;
+  ContaBancaria conta = 5;
+  google.protobuf.Timestamp criadoEm = 6;
 }
 message ContaBancaria{
-  string nomeInstituicao=1;
-  string numeroConta=2;
-  TipoConta tipoConta=3;
+  string nomeInstituicao = 1;
+  string numeroConta = 2;
+  TipoConta tipoConta = 3;
 }
 enum TipoChave{
-  SEM_TIPOCHAVE=0;
+  SEM_TIPOCHAVE = 0;
   CPF = 1;
   TELEFONECELULAR = 2;
   EMAIL = 3;
   CHAVEALEATORIA = 4;
-
 }
 
 enum TipoConta{
-  SEM_TIPOCONTA=0;
+  SEM_TIPOCONTA = 0;
   CONTA_CORRENTE = 1;
   CONTA_POUPANCA = 2;
 }
@@ -77,11 +93,10 @@ message PixKeyRequest {
 message PixKeyResponse {
   string idPix = 1;
 }
-
 message RemoveKeyRequest{
   string pixId = 1;
   string idPortador = 2;
 }
 message RemoveKeyResponse{
-  string pixId=1;
+  string pixId = 1;
 }

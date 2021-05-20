@@ -25,4 +25,10 @@ class Chave(
     fun atualizaDataCriacao(dateTime: LocalDateTime) {
         this.criadoEm = dateTime
     }
+
+    override fun toString(): String {
+        return "Chave(chave='$chave', idPortador='$idPortador', conta=$conta, tipoChave=$tipoChave, contaAssociada=$contaAssociada, criadoEm=$criadoEm, id='$id')"
+    }
+
+
 }

@@ -121,3 +121,14 @@ fun BancoCentralBrasilClient.CriarChaveResponse.paraSearchKeyExternalResponse():
             .setConta(contaBancaria)
             .build()
 }
+
+fun Chave.paraKey():Key{
+    return Key.newBuilder()
+            .setChave(this.chave)
+            .setIdPix(this.id)
+            .setIdPortador(this.idPortador)
+            .setTipoChave(TipoChave.valueOf(this.tipoChave.name))
+            .setTipoConta(TipoConta.valueOf(this.conta.name))
+            .setCriadoEm(this.criadoEm.toTimeStampGrpc())
+            .build()
+}
