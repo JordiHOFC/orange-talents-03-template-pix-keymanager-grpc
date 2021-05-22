@@ -7,6 +7,8 @@ import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Prototype
+import io.micronaut.context.annotation.Replaces
 import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.grpc.server.GrpcServerChannel
 import io.micronaut.http.HttpResponse
@@ -158,13 +160,15 @@ internal class CadastrarNovaChavePixServerTest(
         return Mockito.mock(BancoCentralBrasilClient::class.java)
     }
 
-    @Factory
-    class Clients {
-        @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): PixKeyManagerGRpcServiceGrpc.PixKeyManagerGRpcServiceBlockingStub? {
-            return PixKeyManagerGRpcServiceGrpc.newBlockingStub(channel)
-        }
-    }
+//    @Factory
+//    class Clients {
+//        @Replaces(bean= PixKeyManagerGRpcServiceGrpc.PixKeyManagerGRpcServiceBlockingStub::class)
+////        @Singleton
+//        @Prototype
+//        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): PixKeyManagerGRpcServiceGrpc.PixKeyManagerGRpcServiceBlockingStub? {
+//            return PixKeyManagerGRpcServiceGrpc.newBlockingStub(channel)
+//        }
+//   }
 
     private fun dadosResponse(): ItauLegacyClient.ResponseItau {
         val titular = ItauLegacyClient.Titular("Jordi Henrique Marques da Silva", IDCLIENT, "32759160092")

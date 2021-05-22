@@ -7,6 +7,8 @@ import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Prototype
+import io.micronaut.context.annotation.Replaces
 import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.grpc.server.GrpcServerChannel
 import io.micronaut.http.HttpResponse
@@ -121,13 +123,15 @@ internal class RemoverChavePixServerTest(
         }
     }
 
-    @Factory
-    class Clients {
-        @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): RemoveKeyManagerGrpcServiceGrpc.RemoveKeyManagerGrpcServiceBlockingStub? {
-            return RemoveKeyManagerGrpcServiceGrpc.newBlockingStub(channel)
-        }
-    }
+////    @Factory
+////   class Clients {
+//        @Replaces(bean= RemoveKeyManagerGrpcServiceGrpc.RemoveKeyManagerGrpcServiceBlockingStub::class)
+////        @Singleton
+//        @Prototype
+//        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): RemoveKeyManagerGrpcServiceGrpc.RemoveKeyManagerGrpcServiceBlockingStub {
+//            return RemoveKeyManagerGrpcServiceGrpc.newBlockingStub(channel)
+//        }
+////    }
 
     @MockBean(BancoCentralBrasilClient::class)
     fun bancoCentral(): BancoCentralBrasilClient? {

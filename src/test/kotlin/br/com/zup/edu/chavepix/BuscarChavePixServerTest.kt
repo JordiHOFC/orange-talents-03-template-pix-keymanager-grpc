@@ -7,6 +7,8 @@ import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.context.annotation.Factory
+import io.micronaut.context.annotation.Prototype
+import io.micronaut.context.annotation.Replaces
 import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.grpc.server.GrpcServerChannel
 import io.micronaut.http.HttpResponse
@@ -220,13 +222,16 @@ internal class BuscarChavePixServerTest(
         return Mockito.mock(BancoCentralBrasilClient::class.java)
     }
 
-    @Factory
-    class Clients {
-        @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): SearchPixKeyManagerGrpcServiceGrpc.SearchPixKeyManagerGrpcServiceBlockingStub {
-            return SearchPixKeyManagerGrpcServiceGrpc.newBlockingStub(channel)
-        }
-    }
+//    @Factory
+//    class Clients {
+//       @Replaces(bean=SearchPixKeyManagerGrpcServiceGrpc.SearchPixKeyManagerGrpcServiceBlockingStub::class)
+////        @Singleton
+//      //  @stubTest
+//        @Prototype
+//        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): SearchPixKeyManagerGrpcServiceGrpc.SearchPixKeyManagerGrpcServiceBlockingStub {
+//            return SearchPixKeyManagerGrpcServiceGrpc.newBlockingStub(channel)
+//        }
+//    }
     private fun retornaListadeChaves():List<Chave>{
         val cpf = Chave(chave = "16657363052", idPortador = IDCLIENT, tipoChave = TipoDaChave.CPF, conta = TipoDaConta.CONTA_POUPANCA, contaAssociada = dadosResponse().paraContaAssociada())
         val email = Chave(chave = "jordi@email.com", idPortador = IDCLIENT, tipoChave = TipoDaChave.EMAIL, conta = TipoDaConta.CONTA_POUPANCA, contaAssociada = dadosResponse().paraContaAssociada())
